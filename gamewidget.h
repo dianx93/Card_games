@@ -28,7 +28,8 @@ enum GameWidgetState {
     P_COMPUTER_SWAPPING,
     P_PLAYER_WIN,
     P_COMPUTER_WIN,
-    P_TIE
+    P_TIE,
+    H_PLAYER_DRAWS
 };
 
 class GameWidget : public QWidget

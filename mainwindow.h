@@ -32,10 +32,12 @@ protected:
     QMenu *m_newGameMenu;
         QAction *m_BlackjackAction;
         QAction *m_PokerAction;
+        QAction *m_HoldemAction;
 
 public slots:
     void playBlackjack();
     void playPoker();
+    void playHoldem();
 
 };
 

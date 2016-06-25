@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     hand.cpp \
     blackjackhandevaluator.cpp \
     pokerhandevaluator.cpp \
-    gamewidget.cpp
+    gamewidget.cpp \
+    holdemhandevaluator.cpp
 
 HEADERS  += mainwindow.h \
     card.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     hand.h \
     blackjackhandevaluator.h \
     pokerhandevaluator.h \
-    gamewidget.h
+    gamewidget.h \
+    holdemhandevaluator.h
 
 FORMS    += mainwindow.ui
 

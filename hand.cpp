@@ -4,6 +4,11 @@ Hand::Hand()
 {
 }
 
+Hand::Hand(const Hand &hand)
+{
+    cards = hand.getCards();
+}
+
 void Hand::Add_card(Card* card){
     cards.push_back(card);
 }

@@ -10,8 +10,9 @@ class Hand
     std::vector<Card*> cards;
 public:
     Hand();
+    Hand(const Hand &hand);
     void Add_card(Card* card);
-    inline std::vector<Card*> getCards(){
+    inline std::vector<Card*> getCards() const{
         return cards;
     }
     void Remove_card(int i);

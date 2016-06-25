@@ -52,6 +52,18 @@ void MainWindow::initMenus(){
 
     connect(m_PokerAction, SIGNAL(triggered()),
             this, SLOT(playPoker()));
+
+    //Holdem action
+    m_HoldemAction = new QAction(this);
+    m_HoldemAction->setText(QString("&Texas hold'em"));
+    m_HoldemAction->setStatusTip(QString("Starts a game of Texas hold'em"));
+    m_HoldemAction->setToolTip(QString("Starts a game of Texas hold'em"));
+    m_HoldemAction->setWhatsThis(QString("Activate this to start a game of Texas hold'em."));
+
+    m_newGameMenu->addAction(m_HoldemAction);
+
+    connect(m_HoldemAction, SIGNAL(triggered()),
+            this, SLOT(playHoldem()));
 }
 
 void MainWindow::initWidgets(){
@@ -87,6 +99,22 @@ void MainWindow::playPoker(){
     player.Add_card(deck.Draw());
     player.sort_hand();
     m_gameWidget->setState(GameWidgetState::P_PLAYERS_TURN);
+    m_gameWidget->setPlayerHand(player);
+    m_gameWidget->setComputerHand(computer);
+    m_gameWidget->setDeck(deck);
+    m_gameWidget->update();
+}
+
+void MainWindow::playHoldem(){
+    m_gameWidget->setGameName("Texas hold'em");
+    Deck deck;
+    Hand player;
+    Hand computer;
+    player.Add_card(deck.Draw());
+    player.Add_card(deck.Draw());
+    computer.Add_card(deck.Draw());
+    computer.Add_card(deck.Draw());
+    m_gameWidget->setState(GameWidgetState::H_PLAYER_DRAWS);
     m_gameWidget->setPlayerHand(player);
     m_gameWidget->setComputerHand(computer);
     m_gameWidget->setDeck(deck);
