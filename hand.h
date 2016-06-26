@@ -11,7 +11,9 @@ class Hand
 public:
     Hand();
     Hand(const Hand &hand);
+    Hand& operator+=(const Hand& hand);
     void Add_card(Card* card);
+    void Add_card(Card* card, int index);
     inline std::vector<Card*> getCards() const{
         return cards;
     }

@@ -9,8 +9,18 @@ Hand::Hand(const Hand &hand)
     cards = hand.getCards();
 }
 
+Hand& Hand::operator+=(const Hand& hand){
+    std::vector<Card*> adding = hand.getCards();
+    cards.insert(cards.end(), adding.begin(), adding.end());
+    return *this;
+}
+
 void Hand::Add_card(Card* card){
     cards.push_back(card);
+}
+
+void Hand::Add_card(Card* card, int index){
+    cards.insert(cards.begin() + index, card);
 }
 
 void Hand::Remove_card(int i){

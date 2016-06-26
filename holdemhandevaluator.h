@@ -13,8 +13,7 @@ class HoldemHandEvaluator
 {
 public:
     HoldemHandEvaluator();
-    int evaluate(Hand hand);
-
+    int evaluate(Hand hand, Hand board);
 };
 
 #endif // HOLDEMHANDEVALUATOR_H

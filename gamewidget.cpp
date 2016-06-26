@@ -278,16 +278,147 @@ void GameWidget::paintEvent(QPaintEvent *event) {
             painter.drawText(310, 330, 80, 20, Qt::AlignCenter, QString("AGAIN"));
         }
     }
+    else if(game_name == QString("Texas hold'em")){
+        //computer's hand
+        font.setPixelSize(12);
+        font.setBold(false);
+        font.setCapitalization(QFont::MixedCase);
+        painter.setFont(font);
+        vector<Card*> computercards = m_computer_hand.getCards();
+        if(!computercards.empty()) painter.drawText(10, 120, 100, 16, Qt::AlignRight, QString("Computer's hand:"));
+        int left_start = 120;
+        QPixmap suit_pic;
+        QBrush back(QPixmap(":/pics/card_back_2.png"));
+        painter.setBrush(Qt::white);
+        for (std::vector<Card*>::iterator it = computercards.begin(); it != computercards.end(); ++it){
+            if(m_state!=H_PLAYER_WIN && m_state!=H_COMPUTER_WIN && m_state != H_TIE){
+                painter.setBrush(back);
+                painter.drawRoundedRect(left_start, 100, 80, 112, 5, 5);
+                painter.setBrush(Qt::white);
+            }
+            else{
+                painter.drawRoundedRect(left_start, 100, 80, 112, 5, 5);
+                font.setBold(true);
+                font.setPixelSize(20);
+                painter.setFont(font);
+                if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::red);
+                if((**it).getSuit() == 'D') suit_pic = QPixmap(":/pics/diamond.png");
+                else if((**it).getSuit() == 'H') suit_pic = QPixmap(":/pics/heart.png");
+                else if((**it).getSuit() == 'S') suit_pic = QPixmap(":/pics/spade.png");
+                else suit_pic = QPixmap(":/pics/club.png");
+                painter.drawText(left_start+10, 107, 82, 122, Qt::AlignLeft, (**it).toQString());
+                painter.drawPixmap(left_start+17, 141, 44, 44, suit_pic);
+                if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::black);
+            }
+            left_start += 90;
+        }
+
+        //player's hand
+        font.setBold(false);
+        font.setPixelSize(12);
+        painter.setFont(font);
+        vector<Card*> playercards = m_player_hand.getCards();
+        if(!playercards.empty()) painter.drawText(10, 420, 100, 16, Qt::AlignRight, QString("Your hand:"));
+        left_start = 120;
+        for (std::vector<Card*>::iterator it = playercards.begin(); it != playercards.end(); ++it){
+            painter.drawRoundedRect(left_start, 400, 80, 112, 5, 5);
+            font.setBold(true);
+            font.setPixelSize(20);
+            painter.setFont(font);
+            if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::red);
+            if((**it).getSuit() == 'D') suit_pic = QPixmap(":/pics/diamond.png");
+            else if((**it).getSuit() == 'H') suit_pic = QPixmap(":/pics/heart.png");
+            else if((**it).getSuit() == 'S') suit_pic = QPixmap(":/pics/spade.png");
+            else suit_pic = QPixmap(":/pics/club.png");
+            painter.drawText(left_start+10, 407, 82, 122, Qt::AlignLeft, (**it).toQString());
+            painter.drawPixmap(left_start+17, 441, 44, 44, suit_pic);
+            if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::black);
+            left_start += 90;
+        }
+
+        //deck
+        painter.drawRoundedRect(610, 240, 80, 112, 5, 5);
+        painter.drawRoundedRect(608, 242, 80, 112, 5, 5);
+        painter.drawRoundedRect(606, 244, 80, 112, 5, 5);
+        painter.drawRoundedRect(604, 246, 80, 112, 5, 5);
+        painter.drawRoundedRect(602, 248, 80, 112, 5, 5);
+        painter.setBrush(back);
+        painter.drawRoundedRect(600, 250, 80, 112, 5, 5);
+        painter.setBrush(Qt::white);
+
+        //board
+        font.setBold(false);
+        font.setPixelSize(12);
+        painter.setFont(font);
+        vector<Card*> boardcards = m_board.getCards();
+        left_start = 120;
+        for (std::vector<Card*>::iterator it = boardcards.begin(); it != boardcards.end(); ++it){
+            painter.drawRoundedRect(left_start, 260, 80, 112, 5, 5);
+            font.setBold(true);
+            font.setPixelSize(20);
+            painter.setFont(font);
+            if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::red);
+            if((**it).getSuit() == 'D') suit_pic = QPixmap(":/pics/diamond.png");
+            else if((**it).getSuit() == 'H') suit_pic = QPixmap(":/pics/heart.png");
+            else if((**it).getSuit() == 'S') suit_pic = QPixmap(":/pics/spade.png");
+            else suit_pic = QPixmap(":/pics/club.png");
+            painter.drawText(left_start+10, 267, 82, 122, Qt::AlignLeft, (**it).toQString());
+            painter.drawPixmap(left_start+17, 301, 44, 44, suit_pic);
+            if((**it).getSuit() == 'D' || (**it).getSuit() == 'H') painter.setPen(Qt::black);
+            left_start += 90;
+        }
+
+        //buttons
+        if(m_state != H_PLAYER_WIN && m_state != H_COMPUTER_WIN && m_state != H_TIE && m_state != H_DOING_FLOP){
+            font.setBold(false);
+            painter.setBrush(Qt::white);
+            painter.drawRoundedRect(330, 400, 100, 40, 5, 5);
+            font.setPixelSize(20);
+            painter.setFont(font);
+            painter.drawText(330, 410, 100, 20, Qt::AlignCenter, QString("Continue"));
+        }
+        else if(m_state == H_COMPUTER_WIN){
+            font.setPixelSize(25);
+            painter.setFont(font);
+            painter.setPen(Qt::red);
+            painter.drawText(330, 165, 300, 30, Qt::AlignCenter, QString("COMPUTER WINS!"));
+            painter.setPen(Qt::black);
+        }
+        else if(m_state == H_PLAYER_WIN){
+            font.setPixelSize(25);
+            painter.setFont(font);
+            painter.setPen(Qt::blue);
+            painter.drawText(330, 165, 300, 30, Qt::AlignCenter, QString("YOU WIN!!!"));
+            painter.setPen(Qt::black);
+        }
+        else if(m_state == H_TIE){
+            font.setPixelSize(25);
+            painter.setFont(font);
+            painter.setPen(Qt::darkBlue);
+            painter.drawText(330, 165, 300, 30, Qt::AlignCenter, QString("IT'S A TIE!"));
+            painter.setPen(Qt::black);
+        }
+        if(m_state == H_PLAYER_WIN || m_state == H_COMPUTER_WIN || m_state == H_TIE){
+            painter.setBrush(Qt::gray);
+            font.setPixelSize(14);
+            painter.setFont(font);
+            painter.drawRoundedRect(440, 420, 100, 55, 5, 5);
+            painter.drawText(450, 425, 80, 20, Qt::AlignCenter, QString("PLAY"));
+            painter.drawText(450, 445, 80, 20, Qt::AlignCenter, QString("AGAIN"));
+        }
+    }
     else{
         painter.setBrush(Qt::gray);
         font.setPixelSize(20);
         painter.setFont(font);
         painter.setBrush(Qt::white);
-        painter.drawRoundedRect(300, 200, 200, 40, 5, 5);
-        painter.drawRoundedRect(300, 250, 200, 40, 5, 5);
+        painter.drawRoundedRect(250, 150, 300, 40, 5, 5);
+        painter.drawRoundedRect(250, 200, 300, 40, 5, 5);
+        painter.drawRoundedRect(250, 250, 300, 40, 5, 5);
         painter.setPen(Qt::red);
-        painter.drawText(300, 210, 200, 20, Qt::AlignCenter, QString("PLAY BLACKJACK"));
-        painter.drawText(300, 260, 200, 20, Qt::AlignCenter, QString("PLAY POKER"));
+        painter.drawText(250, 160, 300, 20, Qt::AlignCenter, QString("PLAY BLACKJACK"));
+        painter.drawText(250, 210, 300, 20, Qt::AlignCenter, QString("PLAY POKER"));
+        painter.drawText(250, 260, 300, 20, Qt::AlignCenter, QString("PLAY TEXAS HOLD'EM"));
         font.setPixelSize(15);
         painter.setPen(Qt::darkRed);
         painter.setFont(font);
@@ -310,11 +441,14 @@ void GameWidget::mousePressEvent(QMouseEvent *event) {
     if(game_name == QString("")){
         if(event->button() == Qt::LeftButton){
             if(event->button() == Qt::LeftButton) {
-                if(event->x()>300 && event->x()<500 && event->y()>200 && event->y()<240){
+                if(event->x()>250 && event->x()<550 && event->y()>150 && event->y()<190){
                     m_mainWindow->playBlackjack();
                 }
-                else if(event->x()>300 && event->x()<500 && event->y()>250 && event->y()<290){
+                else if(event->x()>250 && event->x()<550 && event->y()>200 && event->y()<240){
                     m_mainWindow->playPoker();
+                }
+                else if(event->x()>250 && event->x()<550 && event->y()>250 && event->y()<290){
+                    m_mainWindow->playHoldem();
                 }
             }
         }
@@ -422,6 +556,49 @@ void GameWidget::mousePressEvent(QMouseEvent *event) {
         if(event->button() == Qt::LeftButton) {
             if(event->x()>300 && event->x()<400 && event->y()>305 && event->y()<360){
                 m_mainWindow->playPoker();
+            }
+        }
+    }
+    else if(m_state == H_DRAWS || m_state == H_FLOP || m_state == H_TURN || m_state == H_RIVER){
+        if(event->button() == Qt::LeftButton) {
+            if(event->x()>330 && event->x()<430 && event->y()>400 && event->y()<440){
+                if(m_state == H_DRAWS){
+                    m_state = H_DOING_FLOP;
+                    m_mainWindow->setNewGameEnabled(false);
+                    m_board.Add_card(m_deck.Draw());
+                    update();
+                    delay(800);
+                    m_board.Add_card(m_deck.Draw());
+                    update();
+                    delay(800);
+                    m_board.Add_card(m_deck.Draw());
+                    m_state = H_FLOP;
+                    m_mainWindow->setNewGameEnabled(true);
+                }
+                else if(m_state == H_FLOP){
+                    m_state = H_TURN;
+                    m_board.Add_card(m_deck.Draw());
+                }
+                else if(m_state == H_TURN){
+                    m_state = H_RIVER;
+                    m_board.Add_card(m_deck.Draw());
+                }
+                else if(m_state == H_RIVER){
+                    if(HHE.evaluate(m_computer_hand, m_board) > HHE.evaluate(m_player_hand, m_board)){
+                        m_state = H_COMPUTER_WIN;
+                    }
+                    else if(HHE.evaluate(m_player_hand, m_board) > HHE.evaluate(m_computer_hand, m_board)){
+                        m_state = H_PLAYER_WIN;
+                    }
+                    else m_state = H_TIE;
+                }
+            }
+        }
+    }
+    else if(m_state == H_PLAYER_WIN || m_state == H_COMPUTER_WIN || m_state == H_TIE){
+        if(event->button() == Qt::LeftButton) {
+            if(event->x()>440 && event->x()<540 && event->y()>420 && event->y()<475){
+                m_mainWindow->playHoldem();
             }
         }
     }

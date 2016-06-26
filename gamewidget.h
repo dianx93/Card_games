@@ -9,6 +9,7 @@
 #include "deck.h"
 #include "blackjackhandevaluator.h"
 #include "pokerhandevaluator.h"
+#include "holdemhandevaluator.h"
 
 using namespace std;
 
@@ -29,7 +30,14 @@ enum GameWidgetState {
     P_PLAYER_WIN,
     P_COMPUTER_WIN,
     P_TIE,
-    H_PLAYER_DRAWS
+    H_DRAWS,
+    H_DOING_FLOP,
+    H_FLOP,
+    H_TURN,
+    H_RIVER,
+    H_PLAYER_WIN,
+    H_COMPUTER_WIN,
+    H_TIE
 };
 
 class GameWidget : public QWidget
@@ -59,6 +67,9 @@ public slots:
     inline void setDeck(Deck deck){
         m_deck = deck;
     }
+    inline void setBoard(Hand board){
+        m_board = board;
+    }
 
 protected:
     GameWidgetState m_state;
@@ -67,8 +78,10 @@ protected:
     Hand m_player_hand;
     Hand m_computer_hand;
     Deck m_deck;
+    Hand m_board;
     BlackjackHandEvaluator BHE;
     PokerHandEvaluator PHE;
+    HoldemHandEvaluator HHE;
 
     void delay( int millisecondsToWait );
 

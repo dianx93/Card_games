@@ -110,14 +110,16 @@ void MainWindow::playHoldem(){
     Deck deck;
     Hand player;
     Hand computer;
+    Hand board;
     player.Add_card(deck.Draw());
     player.Add_card(deck.Draw());
     computer.Add_card(deck.Draw());
     computer.Add_card(deck.Draw());
-    m_gameWidget->setState(GameWidgetState::H_PLAYER_DRAWS);
+    m_gameWidget->setState(GameWidgetState::H_DRAWS);
     m_gameWidget->setPlayerHand(player);
     m_gameWidget->setComputerHand(computer);
     m_gameWidget->setDeck(deck);
+    m_gameWidget->setBoard(board);
     m_gameWidget->update();
 }
 
